@@ -1,0 +1,159 @@
+/* ============================================================
+   monthly.css — iPad 月次管理ページ（売上・コスト統合）
+   ------------------------------------------------------------
+   左カラム＝月次集計（サマリー＋科目別集計＋統合一覧）
+   右カラム＝新規追加（売上／コスト タブ切替・フォームは sales/cost.js 流用）
+   配色はモノトーン濃淡のみ（00_原則.md §5-9）。縦線を使わず横線と余白で整理。
+   2カラムグリッド本体・summary-card・filter・input-tabs は base.css を流用。
+   本ファイルは monthly 固有の見出し・集計ブロック・一覧テーブルのみ定義。
+   スマホ（is-ipad なし）には影響しない。
+   ============================================================ */
+
+/* 月次管理はヘッダー（戻るボタン）を撤廃するため、2カラム高さを画面全体に合わせる */
+body.is-ipad[data-page="monthly"] .ipad-sc-wrap {
+  height: 100dvh;
+}
+
+/* ── カラム見出し（店舗ロゴと一直線上・横線で区切る） ───── */
+body.is-ipad .mo-col-head {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--uz-text);
+  border-bottom: 1px solid var(--uz-border);
+  flex: 0 0 auto;
+}
+
+/* ── 科目別集計ブロック ──────────────────────────────── */
+body.is-ipad .mo-breakdown {
+  padding: 12px 16px 4px;
+  max-height: 32vh;
+  overflow-y: auto;
+  flex: 0 0 auto;
+}
+body.is-ipad .mo-bd-group {
+  margin-bottom: 14px;
+}
+body.is-ipad .mo-bd-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 4px 0 6px;
+  border-bottom: 1px solid var(--uz-border);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--uz-text);
+}
+body.is-ipad .mo-bd-total {
+  font-variant-numeric: tabular-nums;
+}
+body.is-ipad .mo-bd-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0 5px 10px;
+  font-size: 13px;
+  color: var(--uz-text2, var(--uz-text-muted));
+}
+body.is-ipad .mo-bd-amt {
+  font-variant-numeric: tabular-nums;
+  color: var(--uz-text);
+}
+
+/* ── 統合一覧テーブル ─────────────────────────────────── */
+body.is-ipad .mo-list-wrap {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 0 8px 24px;
+}
+body.is-ipad .mo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+body.is-ipad .mo-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--uz-surface);
+  text-align: left;
+  font-weight: 600;
+  color: var(--uz-text-muted);
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--uz-border);
+  white-space: nowrap;
+}
+body.is-ipad .mo-th-amount { text-align: right; }
+body.is-ipad .mo-th-state,
+body.is-ipad .mo-th-edit   { text-align: center; }
+
+body.is-ipad .mo-row td {
+  padding: 11px 8px;
+  border-bottom: 1px solid var(--uz-border);
+  color: var(--uz-text);
+  vertical-align: middle;
+}
+body.is-ipad .mo-td-date   { white-space: nowrap; color: var(--uz-text-muted); font-variant-numeric: tabular-nums; }
+body.is-ipad .mo-td-item   { font-weight: 600; }
+body.is-ipad .mo-td-memo   { color: var(--uz-text-muted); max-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.is-ipad .mo-td-amount { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+body.is-ipad .mo-td-state  { text-align: center; white-space: nowrap; }
+
+/* 種別タグ（モノトーン濃淡のみ・色相を使わない） */
+body.is-ipad .mo-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid var(--uz-border);
+  background: var(--uz-bg);
+  color: var(--uz-text);
+}
+body.is-ipad .mo-tag--sales    { background: var(--uz-surface); color: var(--uz-text); }
+body.is-ipad .mo-tag--purchase { background: var(--uz-bg);      color: var(--uz-text-muted); }
+body.is-ipad .mo-tag--sga      { background: var(--uz-bg);      color: var(--uz-text-muted); }
+
+/* 状況（売掛・買掛）：モノトーン文字＋枠で区別 */
+body.is-ipad .mo-state {
+  font-size: 12px;
+  color: var(--uz-text-muted);
+}
+body.is-ipad .mo-state--ar,
+body.is-ipad .mo-state--ap {
+  color: var(--uz-text);
+  font-weight: 600;
+}
+
+body.is-ipad .mo-empty {
+  text-align: center;
+  color: var(--uz-text-muted);
+  padding: 28px 0;
+  font-size: 14px;
+}
+
+/* ── 右カラム：見出し＋タブ＋フォームの段組 ─────────────── */
+body.is-ipad[data-page="monthly"] .ipad-sc-right {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+body.is-ipad[data-page="monthly"] .ipad-input-tabs {
+  flex: 0 0 auto;
+}
+body.is-ipad[data-page="monthly"] .ipad-tab-content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+/* 左カラムも縦に積む（見出し→サマリー→フィルタ→集計→一覧） */
+body.is-ipad[data-page="monthly"] .ipad-sc-left {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
